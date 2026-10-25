@@ -1,0 +1,128 @@
+CELL 0, OUTPUT 0
+Notebook Lab 7 Swin-T: các đoạn thuyết minh đã chuyển thành comment Python.
+Thực hiện lần lượt từ trên xuống; cuối notebook sẽ lưu checkpoint, biểu đồ và ZIP.
+
+CELL 1, OUTPUT 0
+Device: cuda | Torch: 2.11.0+cu128
+
+CELL 4, OUTPUT 0
+Downloading: "https://download.pytorch.org/models/swin_t-704ceda3.pth" to /root/.cache/torch/hub/checkpoints/swin_t-704ceda3.pth
+
+CELL 4, OUTPUT 1
+100%|██████████| 108M/108M [00:00<00:00, 182MB/s]  
+
+CELL 4, OUTPUT 2
+Head gốc: 768 -> 1000
+
+CELL 6, OUTPUT 0
+Backbone frozen: True
+
+CELL 8, OUTPUT 0
+Head: Linear(in_features=768, out_features=100, bias=True)
+Tổng tham số: 27,596,254
+Tham số học giai đoạn 1: 76,900
+
+CELL 14, OUTPUT 0
+100%|██████████| 169M/169M [18:05<00:00, 156kB/s] 
+
+CELL 14, OUTPUT 1
+Train: 45000 Validation: 5000 Test: 10000
+
+CELL 16, OUTPUT 2
+head 1/3: train loss=1.3330, acc=64.54% | val loss=0.8567, acc=74.58% | 188s
+  Saved BEST ACC: best_head_by_acc.pth
+  Saved BEST LOSS: best_head_by_loss.pth
+
+CELL 16, OUTPUT 5
+head 2/3: train loss=0.9472, acc=72.19% | val loss=0.8219, acc=75.66% | 187s
+  Saved BEST ACC: best_head_by_acc.pth
+  Saved BEST LOSS: best_head_by_loss.pth
+
+CELL 16, OUTPUT 8
+head 3/3: train loss=0.8810, acc=73.71% | val loss=0.7923, acc=76.48% | 187s
+  Saved BEST ACC: best_head_by_acc.pth
+  Saved BEST LOSS: best_head_by_loss.pth
+HOÀN THÀNH head: best validation accuracy=76.48%; best validation loss=0.7923
+
+CELL 18, OUTPUT 0
+Tham số fine-tune: 27,596,254
+
+CELL 18, OUTPUT 3
+finetune 1/8: train loss=0.5714, acc=82.35% | val loss=0.5164, acc=84.10% | 400s
+  Saved BEST ACC: best_finetune_by_acc.pth
+  Saved BEST LOSS: best_finetune_by_loss.pth
+
+CELL 18, OUTPUT 6
+finetune 2/8: train loss=0.4339, acc=86.37% | val loss=0.4860, acc=85.60% | 405s
+  Saved BEST ACC: best_finetune_by_acc.pth
+  Saved BEST LOSS: best_finetune_by_loss.pth
+
+CELL 18, OUTPUT 9
+finetune 3/8: train loss=0.3531, acc=88.73% | val loss=0.4737, acc=85.72% | 401s
+  Saved BEST ACC: best_finetune_by_acc.pth
+  Saved BEST LOSS: best_finetune_by_loss.pth
+
+CELL 18, OUTPUT 12
+finetune 4/8: train loss=0.2894, acc=90.47% | val loss=0.4749, acc=86.14% | 403s
+  Saved BEST ACC: best_finetune_by_acc.pth
+
+CELL 18, OUTPUT 15
+finetune 5/8: train loss=0.2417, acc=92.16% | val loss=0.4728, acc=86.44% | 401s
+  Saved BEST ACC: best_finetune_by_acc.pth
+  Saved BEST LOSS: best_finetune_by_loss.pth
+
+CELL 18, OUTPUT 18
+finetune 6/8: train loss=0.2077, acc=93.14% | val loss=0.4703, acc=86.68% | 399s
+  Saved BEST ACC: best_finetune_by_acc.pth
+  Saved BEST LOSS: best_finetune_by_loss.pth
+
+CELL 18, OUTPUT 21
+finetune 7/8: train loss=0.1854, acc=94.05% | val loss=0.4722, acc=87.06% | 399s
+  Saved BEST ACC: best_finetune_by_acc.pth
+
+CELL 18, OUTPUT 24
+finetune 8/8: train loss=0.1779, acc=94.26% | val loss=0.4720, acc=86.90% | 399s
+HOÀN THÀNH finetune: best validation accuracy=87.06%; best validation loss=0.4703
+
+CELL 20, OUTPUT 3
+BEST FINETUNE epoch: 7 | Validation Accuracy: 87.06% | Validation Loss: 0.4722
+BEST LOSS checkpoint: /kaggle/working/lab7_swin_cifar100_results/best_finetune_by_loss.pth
+
+CELL 21, OUTPUT 0
+Weight shape: (100, 768) | Bias shape: (100,)
+Weight 5x5 đầu tiên:
+ [[-0.10918355 -0.11597036 -0.16104373  0.05052792 -0.03771073]
+ [ 0.107573    0.0614944  -0.04916945  0.08884199  0.19626449]
+ [ 0.05701707 -0.0081484   0.05126191 -0.20414369  0.09059737]
+ [-0.00562774 -0.17575014 -0.02760342 -0.09944846  0.04548395]
+ [-0.10940476 -0.156328   -0.02278702  0.11574994  0.04899073]]
+Bias 10 lớp đầu: [-0.0075064  -0.03128769  0.00250071  0.02821003 -0.01436231 -0.02977285
+ -0.02750319  0.04184281 -0.05229223 -0.01101001]
+Weight mean/std/min/max: 0.0002826362 0.083676554 -0.36502534 0.36886683
+Bias mean/std/min/max: -0.007000302 0.03244188 -0.10973982 0.07204804
+L2 change after fine-tune head.weight : 3.159363
+L2 change after fine-tune head.bias : 0.059999
+
+CELL 23, OUTPUT 1
+TEST ACCURACY: 86.57% | TEST MACRO-F1: 0.8655
+
+CELL 25, OUTPUT 0
+Đã lưu thư mục: /kaggle/working/lab7_swin_cifar100_results
+Đã tạo ZIP: /kaggle/working/lab7_swin_cifar100_results.zip
+Các tệp:
+   best_finetune_by_acc.pth
+   best_finetune_by_loss.pth
+   best_head_by_acc.pth
+   best_head_by_loss.pth
+   classification_report.csv
+   config.json
+   confusion_matrix.csv
+   confusion_matrix.png
+   final_results.json
+   finetune_validation_accuracy.png
+   head_bias_100.csv
+   head_weights_100x768.csv
+   learning_curves.png
+   split_indices.npz
+   training_history.csv
+   validation_summary.json

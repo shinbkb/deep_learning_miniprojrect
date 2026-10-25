@@ -1,0 +1,9 @@
+{
+  "source": "saved notebook output",
+  "test_accuracy_percent": 73.91,
+  "best_validation_accuracy_percent": 74.5,
+  "clean_train_accuracy_percent": 95.58,
+  "test_loss": 1.66,
+  "total_parameters": 1096196,
+  "best_epoch": 198
+}

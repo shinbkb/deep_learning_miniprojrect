@@ -1,0 +1,8 @@
+{
+  "source": "saved notebook output",
+  "test_accuracy_percent": 86.57,
+  "best_validation_accuracy_percent": 87.06,
+  "test_macro_f1": 0.8655,
+  "total_parameters": 27596254,
+  "best_finetune_epoch": 7
+}

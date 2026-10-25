@@ -1,0 +1,22 @@
+{
+  "model": "CIFARResNet",
+  "seed": 42,
+  "image_size": 32,
+  "batch_size": 128,
+  "epochs": 200,
+  "optimizer": "SGD",
+  "lr": 0.1,
+  "momentum": 0.9,
+  "weight_decay": 0.0005,
+  "label_smoothing": 0.1,
+  "mixup_alpha": 0.2,
+  "dropout": 0.3,
+  "scheduler": "CosineAnnealingLR",
+  "validation_size": 5000,
+  "num_workers": 2,
+  "data_dir": "data/raw",
+  "split_path": "data/splits/stratified_seed42.npz",
+  "results_dir": "results/resnet_mixup",
+  "checkpoint_dir": "checkpoints/resnet_mixup",
+  "amp": false
+}

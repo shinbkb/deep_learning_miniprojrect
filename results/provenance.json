@@ -1,0 +1,16 @@
+[
+  {
+    "model": "resnet_mixup",
+    "notebook": "notebooks/cifar100-cnnbuild_mixup.ipynb",
+    "sha256": "8acbad6e1d27fe82652f448c43d3cb34cce633c2d17e5a5eb8d67197ed6f65bd",
+    "origin": "Saved notebook outputs; training not rerun",
+    "cell_indices": "zero-based"
+  },
+  {
+    "model": "swin_t",
+    "notebook": "notebooks/swin transformer.ipynb",
+    "sha256": "850a26751e5427b9f0656360aa5d13943be5665e99c6f4018229fdff18949783",
+    "origin": "Saved notebook outputs; training not rerun",
+    "cell_indices": "zero-based"
+  }
+]

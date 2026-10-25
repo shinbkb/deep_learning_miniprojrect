@@ -1,0 +1,12 @@
+# Install compatible torch/torchvision builds for your CPU or CUDA first.
+# Unpinned dependencies: this is not a reproduction lockfile.
+torch
+torchvision
+numpy
+pandas
+matplotlib
+seaborn
+scikit-learn
+tqdm
+jupyterlab
+ipykernel
