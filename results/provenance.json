@@ -1,16 +1,32 @@
 [
   {
     "model": "resnet_mixup",
-    "notebook": "notebooks/cifar100-cnnbuild_mixup.ipynb",
+    "notebook": "notebooks/training/cifar100-cnnbuild_mixup.ipynb",
     "sha256": "8acbad6e1d27fe82652f448c43d3cb34cce633c2d17e5a5eb8d67197ed6f65bd",
     "origin": "Saved notebook outputs; training not rerun",
     "cell_indices": "zero-based"
   },
   {
     "model": "swin_t",
-    "notebook": "notebooks/swin transformer.ipynb",
+    "notebook": "notebooks/training/swin transformer.ipynb",
     "sha256": "850a26751e5427b9f0656360aa5d13943be5665e99c6f4018229fdff18949783",
     "origin": "Saved notebook outputs; training not rerun",
+    "cell_indices": "zero-based"
+  },
+  {
+    "model": "resnet_mixup",
+    "notebook": "notebooks/analysis/cnnrebuild-feature-visualization.ipynb",
+    "sha256": "c352be1105d25f06c95288b7bfaa9ce4ee71a43ba152ce6ecc6bef65d80c5db3",
+    "origin": "Saved feature analysis notebook outputs; inference not rerun",
+    "purpose": "feature_analysis",
+    "cell_indices": "zero-based"
+  },
+  {
+    "model": "swin_t",
+    "notebook": "notebooks/analysis/swin_t_feature.ipynb",
+    "sha256": "c1c0a5dcc96a295c48e8792787c76b64ec47a319313a9bad4292a6e3f4bd4207",
+    "origin": "Saved feature analysis notebook outputs; inference not rerun",
+    "purpose": "feature_analysis",
     "cell_indices": "zero-based"
   }
 ]

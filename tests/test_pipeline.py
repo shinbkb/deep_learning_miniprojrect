@@ -37,7 +37,7 @@ class PipelineTests(unittest.TestCase):
 
     def test_resnet_mixup_checkpoint_and_reports(self):
         config = load_config('configs/resnet_mixup.json')
-        self.assertTrue((ROOT/'train.py').exists())
+        self.assertTrue((ROOT/'scripts/train.py').exists())
         model = build_model(config)
         self.assertEqual(sum(p.numel() for p in model.parameters()),1096196)
         inputs = torch.randn(4,3,32,32)

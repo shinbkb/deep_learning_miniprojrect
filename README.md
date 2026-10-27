@@ -5,29 +5,37 @@ Code chạy chính nằm trong `src/cifar100/`; các notebook giữ nguyên đ�
 ## Cấu trúc
 
 ```text
-train.py                      # Huấn luyện theo JSON config
-evaluate.py                   # Đánh giá checkpoint, xuất chỉ số và hình
-predict.py                    # Dự đoán một ảnh
+scripts/
+  train.py                    # Huấn luyện theo JSON config
+  evaluate.py                 # Đánh giá checkpoint, xuất metrics và hình
+  predict.py                  # Dự đoán một ảnh
+  inspect_notebooks.py        # Kiểm tra cả training/ và analysis/
 src/cifar100/
-  config.py                   # Đọc/kiểm tra config, resolve đường dẫn
-  data.py                     # Transform, CIFAR-100, split dùng chung
-  models/resnet.py            # CIFARResNet tự xây dựng
-  models/swin.py              # Swin-T và hai giai đoạn optimizer
-  engine.py                   # Train một epoch, MixUp, evaluate
-  pipeline.py                 # Điều phối train và chọn checkpoint
-  checkpoint.py               # Lưu/nạp model và thông tin split
-  reporting.py                # CSV, JSON, learning curves, confusion matrix
-  utils.py                    # Seed, device, thư mục run
-  cli.py                      # Tham số dòng lệnh
-configs/                      # Cấu hình được train.py đọc trực tiếp
-notebooks/                    # Notebook gốc, giữ nguyên code và outputs
+  models/{resnet,swin}.py      # Kiến trúc và optimizer Swin
+  config.py, data.py          # Cấu hình, preprocessing và split
+  engine.py, pipeline.py      # Train / evaluate và điều phối
+  checkpoint.py, reporting.py # Checkpoint và xuất kết quả
+  utils.py, cli.py            # Tiện ích và tham số dòng lệnh
+notebooks/
+  training/
+    cifar100-cnnbuild_mixup.ipynb
+    swin transformer.ipynb
+  analysis/
+    cnnrebuild-feature-visualization.ipynb
+    swin_t_feature.ipynb
+configs/                      # Cấu hình của scripts/train.py
 data/{raw,processed,splits}/
-checkpoints/{resnet_mixup,swin_t}/<run>/
-results/{resnet_mixup,swin_t}/<run>/
+checkpoints/{resnet_mixup,swin_t}/
+results/
+  provenance.json             # Nguồn và hash các notebook
+  resnet_mixup/                # Kết quả train cũ, các run Python
+    feature_analysis/         # Kết quả feature CNN tải từ Kaggle
+  swin_t/
+    feature_analysis/         # Kết quả feature Swin tải từ Kaggle
 reports/{slides,latex}/
-tests/test_pipeline.py        # Kiểm tra offline bằng dữ liệu tổng hợp
-scripts/inspect_notebooks.py  # Kiểm tra notebook gốc
-docs/                         # Giao thức so sánh, đường dẫn
+tests/test_pipeline.py
+docs/
+requirements.txt
 ```
 
 ## Cài đặt
@@ -46,8 +54,8 @@ PyTorch cần bản tương thích GPU/CUDA của máy nếu muốn train GPU. �
 ## Huấn luyện
 
 ```bash
-python train.py --config configs/resnet_mixup.json --download --run-name resnet_run01
-python train.py --config configs/swin_t.json --download --run-name swin_run01
+python scripts/train.py --config configs/resnet_mixup.json --download --run-name resnet_run01
+python scripts/train.py --config configs/swin_t.json --download --run-name swin_run01
 ```
 
 `--device auto` mặc định chọn CUDA nếu có, nếu không dùng CPU. Có thể chỉ định `--device cuda:0` hoặc `--device cpu`. CIFAR-100 tải vào `data/raw/`; bỏ `--download` khi đã có dữ liệu. Lần đầu train Swin-T cần Internet để tải trọng số ImageNet nếu chưa được cache, độc lập với cờ tải dataset. Train đầy đủ trên CPU có thể rất lâu.
@@ -66,8 +74,8 @@ Mỗi run có config, history CSV, learning curves, log và training summary ri�
 Sau khi chốt cấu hình, đánh giá test:
 
 ```bash
-python evaluate.py --checkpoint checkpoints/resnet_mixup/resnet_run01/train_best_accuracy.pt --split test
-python evaluate.py --checkpoint checkpoints/swin_t/swin_run01/finetune_best_accuracy.pt --split test
+python scripts/evaluate.py --checkpoint checkpoints/resnet_mixup/resnet_run01/train_best_accuracy.pt --split test
+python scripts/evaluate.py --checkpoint checkpoints/swin_t/swin_run01/finetune_best_accuracy.pt --split test
 ```
 
 Có thể dùng `--split val` (mặc định) hoặc `--split train` để đánh giá dữ liệu sạch; `--data-dir`, `--batch-size`, `--num-workers` cho phép đổi môi trường đánh giá. Kết quả nằm trong `results/<model>/<run>/evaluations/<split_timestamp>/`:
@@ -81,7 +89,7 @@ Không so sánh trực tiếp train accuracy có MixUp với validation accuracy
 ## Dự đoán ảnh
 
 ```bash
-python predict.py --checkpoint checkpoints/resnet_mixup/resnet_run01/train_best_accuracy.pt --image /duong/dan/anh.jpg --top-k 5
+python scripts/predict.py --checkpoint checkpoints/resnet_mixup/resnet_run01/train_best_accuracy.pt --image /duong/dan/anh.jpg --top-k 5
 ```
 
 Kết quả JSON gồm tên lớp và softmax probability; đây không phải bảo đảm độ tin cậy trên ảnh ngoài phân phối CIFAR-100.
@@ -93,3 +101,17 @@ python -m unittest discover -s tests -v
 ```
 
 Tests dùng dữ liệu tổng hợp, không tải dataset/trọng số và không tái tạo các điểm số báo cáo. Pipeline `.py` chưa được train lại đầy đủ; kết quả lịch sử trong notebook và `results/<model>/metrics/` vẫn là kết quả notebook gốc. Checkpoint notebook `.pth` có định dạng khác, không nạp trực tiếp bằng các CLI mới. Xem `docs/paths.md`.
+
+## Notebook phân tích đặc trưng
+
+- `notebooks/training/`: hai notebook huấn luyện gốc và kết quả thực nghiệm.
+- `notebooks/analysis/`: hai notebook nạp checkpoint đã train, trích feature và vẽ PCA/t-SNE; không train lại.
+- Upload notebook analysis và checkpoint tương ứng lên Kaggle, thêm dataset CIFAR-100 rồi chạy các cell. Các đường dẫn trong notebook vẫn dành cho Kaggle.
+- Tải ZIP kết quả feature từ Kaggle, đưa **nội dung bên trong thư mục `feature_analysis`** vào `results/resnet_mixup/feature_analysis/` hoặc `results/swin_t/feature_analysis/`. Hiện đây là thư mục đích, chưa có dữ liệu feature được tải về trong lần sắp xếp này.
+- Dùng cùng test indices và nhãn khi so sánh hai model. `sample_test_indices.npy` và `feature_sample_manifest.csv` giúp kiểm tra điều đó.
+
+Kiểm tra cú pháp cả bốn notebook mà không chạy huấn luyện:
+
+```bash
+python scripts/inspect_notebooks.py
+```

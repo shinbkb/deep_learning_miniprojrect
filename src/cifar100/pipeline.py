@@ -1,4 +1,4 @@
-"""Training orchestration; the test split is only opened by evaluate.py."""
+"""Training orchestration; the test split is only opened by scripts/evaluate.py."""
 import logging
 import time
 import torch
